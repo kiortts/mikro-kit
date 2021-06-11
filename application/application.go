@@ -10,15 +10,14 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/kiortts/mikro-kit/api"
 	"github.com/pkg/errors"
 )
 
 type Application struct {
 	name       string
 	version    string
-	services   []api.Runnable
-	mainParams *api.MainParams
+	services   []Runnable
+	mainParams *MainParams
 }
 
 func New(appName string, appVersion string) *Application {
@@ -31,7 +30,7 @@ func New(appName string, appVersion string) *Application {
 	return app
 }
 
-func (app *Application) Add(services ...api.Runnable) *Application {
+func (app *Application) Add(services ...Runnable) *Application {
 	app.services = append(app.services, services...)
 	return app
 }
@@ -42,7 +41,7 @@ func (app *Application) Run() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	wg := new(sync.WaitGroup)
 
-	app.mainParams = &api.MainParams{
+	app.mainParams = &MainParams{
 		Ctx:  ctx,
 		Wg:   wg,
 		Kill: cancel,

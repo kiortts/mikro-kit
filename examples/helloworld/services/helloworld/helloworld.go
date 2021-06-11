@@ -5,41 +5,47 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/kiortts/mikro-kit/api"
+	"github.com/kiortts/mikro-kit/application"
 )
 
-// HelloWordService struct
-type HelloWordService struct {
+// HelloWordModule struct
+type HelloWordModule struct {
 	cancel context.CancelFunc
 }
 
 // static interface implementation check
-var _ api.Runnable = (*HelloWordService)(nil)
+var _ application.Runnable = (*HelloWordModule)(nil)
 
+// static variables
 var cfg *Config
 
-// Make the service
-func New(config *Config) *HelloWordService {
+// Make the instance.
+// This method never returns any error.
+func New(config *Config) *HelloWordModule {
 
 	checkConfig(config)
 
-	s := &HelloWordService{}
+	s := &HelloWordModule{}
 	return s
 }
 
-// Run the service
-func (s *HelloWordService) Run(mainParams *api.MainParams) error {
+// Run the module.
+// This is non blocking method returns only module starting errors.
+func (s *HelloWordModule) Run(mainParams *application.MainParams) error {
 
+	// make the local context for this module instance
 	var localCtx context.Context
 	localCtx, s.cancel = context.WithCancel(mainParams.Ctx)
 
-	mainParams.Wg.Add(1)
-	go printHello(localCtx, mainParams.Wg)
+	// run module workers
+	mainParams.Wg.Add(1)                             // every time increment the WaitGroup before start goroutine
+	go printHello(localCtx, mainParams.Wg, cfg.Name) // run goroutine
 
 	return nil
 }
 
-func printHello(ctx context.Context, wg *sync.WaitGroup) {
-	defer wg.Done()
-	fmt.Printf("Hello, %s!!!\n", cfg.Name)
+// Some runtime function.
+func printHello(ctx context.Context, wg *sync.WaitGroup, name string) {
+	defer wg.Done()                    // every time Done the WaitGroup before leave goroutine
+	fmt.Printf("Hello, %s!!!\n", name) // do something
 }
