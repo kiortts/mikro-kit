@@ -22,11 +22,11 @@ type Storage struct {
 }
 
 // проверка реализации типом интерфейсов
-var _ ghibli.FilmRepo = (*Storage)(nil)
-var _ ghibli.PersonRepo = (*Storage)(nil)
-var _ ghibli.LocationRepo = (*Storage)(nil)
-var _ ghibli.SpeciesRepo = (*Storage)(nil)
-var _ ghibli.VehicleRepo = (*Storage)(nil)
+var _ ghibli.FilmStorage = (*Storage)(nil)
+var _ ghibli.PersonStorage = (*Storage)(nil)
+var _ ghibli.LocationStorage = (*Storage)(nil)
+var _ ghibli.SpeciesStorage = (*Storage)(nil)
+var _ ghibli.VehicleStorage = (*Storage)(nil)
 
 // конфигурация
 type config struct {
@@ -63,23 +63,23 @@ func NewLocal() *Storage {
 
 func (s *Storage) Run(main *application.MainParams) error {
 
-	// log.Printf(dict.LOG_SERVICE_RUN, "Repo")
+	// log.Printf(dict.LOG_SERVICE_RUN, "Storage")
 
 	if err := s.fill(); err != nil {
-		return errors.Wrap(err, "Run repo err")
+		return errors.Wrap(err, "Run Storage err")
 	}
 
 	main.Wg.Add(1)
 	go func() {
 		defer main.Wg.Done()
 		<-main.Ctx.Done()
-		log.Printf("Repo DONE")
+		log.Printf("Storage DONE")
 	}()
 
 	return nil
 }
 
-// GetFilm реализация интерфейса FilmRepo.
+// GetFilm реализация интерфейса FilmStorage.
 // Возвращает один фильм по id.
 func (s *Storage) GetFilm(id string) (*ghibli.Film, error) {
 
@@ -91,7 +91,7 @@ func (s *Storage) GetFilm(id string) (*ghibli.Film, error) {
 	return film, nil
 }
 
-// GetFilms реализация интерфейса FilmRepo
+// GetFilms реализация интерфейса FilmStorage
 // Возвращает массив всех фильмов.
 func (s *Storage) GetFilms() ([]*ghibli.Film, error) {
 
@@ -104,7 +104,7 @@ func (s *Storage) GetFilms() ([]*ghibli.Film, error) {
 	return films, nil
 }
 
-// GetPerson реализация интерфейса PersonRepo.
+// GetPerson реализация интерфейса PersonStorage.
 // Возвращает одного персонажа фильм по id.
 func (s *Storage) GetPerson(id string) (*ghibli.Person, error) {
 
@@ -116,7 +116,7 @@ func (s *Storage) GetPerson(id string) (*ghibli.Person, error) {
 	return person, nil
 }
 
-// GetPeople реализация интерфейса PersonRepo
+// GetPeople реализация интерфейса PersonStorage
 // Возвращает массив всех персонажей.
 func (s *Storage) GetPeople() ([]*ghibli.Person, error) {
 
@@ -129,7 +129,7 @@ func (s *Storage) GetPeople() ([]*ghibli.Person, error) {
 	return people, nil
 }
 
-// GetLocation реализация интерфейса PersonRepo.
+// GetLocation реализация интерфейса PersonStorage.
 // Возвращает одну локацию.
 func (s *Storage) GetLocation(id string) (*ghibli.Location, error) {
 
@@ -141,7 +141,7 @@ func (s *Storage) GetLocation(id string) (*ghibli.Location, error) {
 	return item, nil
 }
 
-// GetLocations реализация интерфейса PersonRepo
+// GetLocations реализация интерфейса PersonStorage
 // Возвращает массив всех локаций.
 func (s *Storage) GetLocations() ([]*ghibli.Location, error) {
 
@@ -154,7 +154,7 @@ func (s *Storage) GetLocations() ([]*ghibli.Location, error) {
 	return items, nil
 }
 
-// GetLocation реализация интерфейса PersonRepo.
+// GetLocation реализация интерфейса PersonStorage.
 // Возвращает одну локацию.
 func (s *Storage) GetSpecies(id string) (*ghibli.Species, error) {
 
@@ -166,7 +166,7 @@ func (s *Storage) GetSpecies(id string) (*ghibli.Species, error) {
 	return item, nil
 }
 
-// GetLocations реализация интерфейса PersonRepo
+// GetLocations реализация интерфейса PersonStorage
 // Возвращает массив всех локаций.
 func (s *Storage) GetAllSpecies() ([]*ghibli.Species, error) {
 
@@ -179,7 +179,7 @@ func (s *Storage) GetAllSpecies() ([]*ghibli.Species, error) {
 	return items, nil
 }
 
-// GetLocation реализация интерфейса PersonRepo.
+// GetLocation реализация интерфейса PersonStorage.
 // Возвращает одну локацию.
 func (s *Storage) GetVehicle(id string) (*ghibli.Vehicle, error) {
 
@@ -191,7 +191,7 @@ func (s *Storage) GetVehicle(id string) (*ghibli.Vehicle, error) {
 	return item, nil
 }
 
-// GetLocations реализация интерфейса PersonRepo
+// GetLocations реализация интерфейса PersonStorage
 // Возвращает массив всех локаций.
 func (s *Storage) GetVehicles() ([]*ghibli.Vehicle, error) {
 

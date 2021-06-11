@@ -112,21 +112,21 @@ var vehicle2 ghibli.Vehicle = ghibli.Vehicle{
 }
 
 // хранилище, возвращающее только ошибки
-type errRepo struct{}
+type errStorage struct{}
 
-// реализация интерфейсов всех repo
-func (r *errRepo) GetFilm(id string) (*ghibli.Film, error)         { return nil, internal.MockError }
-func (r *errRepo) GetFilms() ([]*ghibli.Film, error)               { return nil, internal.MockError }
-func (r *errRepo) GetPerson(id string) (*ghibli.Person, error)     { return nil, internal.MockError }
-func (r *errRepo) GetPeople() ([]*ghibli.Person, error)            { return nil, internal.MockError }
-func (r *errRepo) GetLocation(id string) (*ghibli.Location, error) { return nil, internal.MockError }
-func (r *errRepo) GetLocations() ([]*ghibli.Location, error)       { return nil, internal.MockError }
-func (r *errRepo) GetSpecies(id string) (*ghibli.Species, error)   { return nil, internal.MockError }
-func (r *errRepo) GetAllSpecies() ([]*ghibli.Species, error)       { return nil, internal.MockError }
-func (r *errRepo) GetVehicle(id string) (*ghibli.Vehicle, error)   { return nil, internal.MockError }
-func (r *errRepo) GetVehicles() ([]*ghibli.Vehicle, error)         { return nil, internal.MockError }
+// реализация интерфейсов всех Storage
+func (r *errStorage) GetFilm(id string) (*ghibli.Film, error)         { return nil, internal.MockError }
+func (r *errStorage) GetFilms() ([]*ghibli.Film, error)               { return nil, internal.MockError }
+func (r *errStorage) GetPerson(id string) (*ghibli.Person, error)     { return nil, internal.MockError }
+func (r *errStorage) GetPeople() ([]*ghibli.Person, error)            { return nil, internal.MockError }
+func (r *errStorage) GetLocation(id string) (*ghibli.Location, error) { return nil, internal.MockError }
+func (r *errStorage) GetLocations() ([]*ghibli.Location, error)       { return nil, internal.MockError }
+func (r *errStorage) GetSpecies(id string) (*ghibli.Species, error)   { return nil, internal.MockError }
+func (r *errStorage) GetAllSpecies() ([]*ghibli.Species, error)       { return nil, internal.MockError }
+func (r *errStorage) GetVehicle(id string) (*ghibli.Vehicle, error)   { return nil, internal.MockError }
+func (r *errStorage) GetVehicles() ([]*ghibli.Vehicle, error)         { return nil, internal.MockError }
 
 // Возвращает хранилище, имитирующее ошибки при работе.
-func NewErr() *errRepo {
-	return new(errRepo)
+func NewErr() *errStorage {
+	return new(errStorage)
 }

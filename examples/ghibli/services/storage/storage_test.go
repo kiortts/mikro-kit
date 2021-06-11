@@ -16,58 +16,58 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
 )
 
-func getAnyFilm(repo *storage.Storage) (*ghibli.Film, error) {
-	films, _ := repo.GetFilms()
+func getAnyFilm(stor *storage.Storage) (*ghibli.Film, error) {
+	films, _ := stor.GetFilms()
 	for _, film := range films {
 		return film, nil
 
 	}
-	return nil, fmt.Errorf("Empty repo")
+	return nil, fmt.Errorf("Empty stor")
 }
 
-func getAnyPerson(repo *storage.Storage) (*ghibli.Person, error) {
-	items, _ := repo.GetPeople()
+func getAnyPerson(stor *storage.Storage) (*ghibli.Person, error) {
+	items, _ := stor.GetPeople()
 	for _, item := range items {
 		return item, nil
 
 	}
-	return nil, fmt.Errorf("Empty repo")
+	return nil, fmt.Errorf("Empty stor")
 }
 
-func getAnyLocation(repo *storage.Storage) (*ghibli.Location, error) {
-	items, _ := repo.GetLocations()
+func getAnyLocation(stor *storage.Storage) (*ghibli.Location, error) {
+	items, _ := stor.GetLocations()
 	for _, item := range items {
 		return item, nil
 
 	}
-	return nil, fmt.Errorf("Empty repo")
+	return nil, fmt.Errorf("Empty stor")
 }
 
-func getAnySpecies(repo *storage.Storage) (*ghibli.Species, error) {
-	items, _ := repo.GetAllSpecies()
+func getAnySpecies(stor *storage.Storage) (*ghibli.Species, error) {
+	items, _ := stor.GetAllSpecies()
 	for _, item := range items {
 		return item, nil
 
 	}
-	return nil, fmt.Errorf("Empty repo")
+	return nil, fmt.Errorf("Empty stor")
 }
 
-func getAnyVehicle(repo *storage.Storage) (*ghibli.Vehicle, error) {
-	items, _ := repo.GetVehicles()
+func getAnyVehicle(stor *storage.Storage) (*ghibli.Vehicle, error) {
+	items, _ := stor.GetVehicles()
 	for _, item := range items {
 		return item, nil
 
 	}
-	return nil, fmt.Errorf("Empty repo")
+	return nil, fmt.Errorf("Empty stor")
 }
 
 // корректный id
-func GetFilmValidId(t *testing.T, repo *storage.Storage) {
-	film1, err := getAnyFilm(repo)
+func GetFilmValidId(t *testing.T, stor *storage.Storage) {
+	film1, err := getAnyFilm(stor)
 	if err != nil {
 		t.Errorf("getAnyFilmId err: %v", err)
 	}
-	film2, err := repo.GetFilm(film1.Id)
+	film2, err := stor.GetFilm(film1.Id)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
@@ -77,28 +77,28 @@ func GetFilmValidId(t *testing.T, repo *storage.Storage) {
 }
 
 // несуществующий id
-func GetFilmNonexistId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetFilm(utils.NewUUID())
+func GetFilmNonexistId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetFilm(utils.NewUUID())
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // некорректный id
-func GetFilmInvalidId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetFilm("")
+func GetFilmInvalidId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetFilm("")
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // корректный id
-func GetPersonValidId(t *testing.T, repo *storage.Storage) {
-	item1, err := getAnyPerson(repo)
+func GetPersonValidId(t *testing.T, stor *storage.Storage) {
+	item1, err := getAnyPerson(stor)
 	if err != nil {
 		t.Errorf("getAnyPerson err: %v", err)
 	}
-	item2, err := repo.GetPerson(item1.Id)
+	item2, err := stor.GetPerson(item1.Id)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
@@ -108,28 +108,28 @@ func GetPersonValidId(t *testing.T, repo *storage.Storage) {
 }
 
 // несуществующий id
-func GetPersonNonexistId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetPerson(utils.NewUUID())
+func GetPersonNonexistId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetPerson(utils.NewUUID())
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // некорректный id
-func GetPersonInvalidId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetPerson("")
+func GetPersonInvalidId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetPerson("")
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // корректный id
-func GetLocationValidId(t *testing.T, repo *storage.Storage) {
-	item1, err := getAnyLocation(repo)
+func GetLocationValidId(t *testing.T, stor *storage.Storage) {
+	item1, err := getAnyLocation(stor)
 	if err != nil {
 		t.Errorf("getAnyPerson err: %v", err)
 	}
-	item2, err := repo.GetLocation(item1.Id)
+	item2, err := stor.GetLocation(item1.Id)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
@@ -139,28 +139,28 @@ func GetLocationValidId(t *testing.T, repo *storage.Storage) {
 }
 
 // несуществующий id
-func GetLocationNonexistId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetLocation(utils.NewUUID())
+func GetLocationNonexistId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetLocation(utils.NewUUID())
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // некорректный id
-func GetLocationInvalidId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetLocation("")
+func GetLocationInvalidId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetLocation("")
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // корректный id
-func GetSpeciesValidId(t *testing.T, repo *storage.Storage) {
-	item1, err := getAnySpecies(repo)
+func GetSpeciesValidId(t *testing.T, stor *storage.Storage) {
+	item1, err := getAnySpecies(stor)
 	if err != nil {
 		t.Errorf("getAnyPerson err: %v", err)
 	}
-	item2, err := repo.GetSpecies(item1.Id)
+	item2, err := stor.GetSpecies(item1.Id)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
@@ -170,28 +170,28 @@ func GetSpeciesValidId(t *testing.T, repo *storage.Storage) {
 }
 
 // несуществующий id
-func GetSpeciesNonexistId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetSpecies(utils.NewUUID())
+func GetSpeciesNonexistId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetSpecies(utils.NewUUID())
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // некорректный id
-func GetSpeciesInvalidId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetSpecies("")
+func GetSpeciesInvalidId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetSpecies("")
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // корректный id
-func GetVehicleValidId(t *testing.T, repo *storage.Storage) {
-	item1, err := getAnyVehicle(repo)
+func GetVehicleValidId(t *testing.T, stor *storage.Storage) {
+	item1, err := getAnyVehicle(stor)
 	if err != nil {
 		t.Errorf("getAnyPerson err: %v", err)
 	}
-	item2, err := repo.GetVehicle(item1.Id)
+	item2, err := stor.GetVehicle(item1.Id)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
@@ -201,34 +201,34 @@ func GetVehicleValidId(t *testing.T, repo *storage.Storage) {
 }
 
 // несуществующий id
-func GetVehicleNonexistId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetVehicle(utils.NewUUID())
+func GetVehicleNonexistId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetVehicle(utils.NewUUID())
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 // некорректный id
-func GetVehicleInvalidId(t *testing.T, repo *storage.Storage) {
-	_, err := repo.GetVehicle("")
+func GetVehicleInvalidId(t *testing.T, stor *storage.Storage) {
+	_, err := stor.GetVehicle("")
 	if err != internal.NotFoundError {
 		t.Errorf("Wrong err: %v", err)
 	}
 }
 
 func TestGetFilmMock1(t *testing.T) {
-	repo := storage.NewMock()
-	GetFilmValidId(t, repo)
+	stor := storage.NewMock()
+	GetFilmValidId(t, stor)
 }
 
 func TestGetFilmMock2(t *testing.T) {
-	repo := storage.NewMock()
-	GetFilmNonexistId(t, repo)
+	stor := storage.NewMock()
+	GetFilmNonexistId(t, stor)
 }
 
 func TestGetFilmMock3(t *testing.T) {
-	repo := storage.NewMock()
-	GetFilmInvalidId(t, repo)
+	stor := storage.NewMock()
+	GetFilmInvalidId(t, stor)
 }
 
 func setEnv() {
@@ -242,47 +242,47 @@ func setEnv() {
 	os.Setenv("VEHICLES_FILE", "./src/vehicles.js")
 }
 
-func getRepo(t *testing.T) (*storage.Storage, error) {
+func getStorage(t *testing.T) (*storage.Storage, error) {
 
-	repo := storage.NewLocal()
+	stor := storage.NewLocal()
 	main := &application.MainParams{Ctx: context.Background(), Wg: new(sync.WaitGroup), Kill: func() {}}
 
-	err := repo.Run(main)
+	err := stor.Run(main)
 	if err != nil {
-		return nil, fmt.Errorf("repo.Run err: %v", err)
+		return nil, fmt.Errorf("stor.Run err: %v", err)
 	}
 
-	return repo, nil
+	return stor, nil
 }
 
 // корректный id
 func TestGetFilm1(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetFilmValidId(t, repo)
+	GetFilmValidId(t, stor)
 }
 
 // несуществующий id
 func TestGetFilm2(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetFilmNonexistId(t, repo)
+	GetFilmNonexistId(t, stor)
 }
 
 // некорректный id
 func TestGetFilm3(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetFilmInvalidId(t, repo)
+	GetFilmInvalidId(t, stor)
 }
 
 // некорректно указан файл фильмов
@@ -290,7 +290,7 @@ func TestGetFilm3(t *testing.T) {
 func TestGetFilm4(t *testing.T) {
 	setEnv()
 	os.Setenv("FILMS_FILE", "")
-	_, err := getRepo(t)
+	_, err := getStorage(t)
 	if err == nil {
 		t.Errorf("Nil err")
 	}
@@ -299,7 +299,7 @@ func TestGetFilm4(t *testing.T) {
 func TestGetFilm5(t *testing.T) {
 	setEnv()
 	os.Setenv("PEOPLE_FILE", "")
-	_, err := getRepo(t)
+	_, err := getStorage(t)
 	if err == nil {
 		t.Errorf("Nil err")
 	}
@@ -308,7 +308,7 @@ func TestGetFilm5(t *testing.T) {
 func TestGetFilm6(t *testing.T) {
 	setEnv()
 	os.Setenv("LOCATIONS_FILE", "")
-	_, err := getRepo(t)
+	_, err := getStorage(t)
 	if err == nil {
 		t.Errorf("Nil err")
 	}
@@ -317,7 +317,7 @@ func TestGetFilm6(t *testing.T) {
 func TestGetFilm7(t *testing.T) {
 	setEnv()
 	os.Setenv("SPECIES_FILE", "")
-	_, err := getRepo(t)
+	_, err := getStorage(t)
 	if err == nil {
 		t.Errorf("Nil err")
 	}
@@ -326,7 +326,7 @@ func TestGetFilm7(t *testing.T) {
 func TestGetFilm8(t *testing.T) {
 	setEnv()
 	os.Setenv("VEHICLES_FILE", "")
-	_, err := getRepo(t)
+	_, err := getStorage(t)
 	if err == nil {
 		t.Errorf("Nil err")
 	}
@@ -335,224 +335,224 @@ func TestGetFilm8(t *testing.T) {
 // =============================================================
 
 func TestGetPersonMock1(t *testing.T) {
-	repo := storage.NewMock()
-	GetPersonValidId(t, repo)
+	stor := storage.NewMock()
+	GetPersonValidId(t, stor)
 }
 
 func TestGetPersonMock2(t *testing.T) {
-	repo := storage.NewMock()
-	GetPersonNonexistId(t, repo)
+	stor := storage.NewMock()
+	GetPersonNonexistId(t, stor)
 }
 
 func TestGetPersonMock3(t *testing.T) {
-	repo := storage.NewMock()
-	GetPersonInvalidId(t, repo)
+	stor := storage.NewMock()
+	GetPersonInvalidId(t, stor)
 }
 
 // корректный id
 func TestGetPerson1(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetPersonValidId(t, repo)
+	GetPersonValidId(t, stor)
 }
 
 // несуществующий id
 func TestGetPerson2(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetPersonNonexistId(t, repo)
+	GetPersonNonexistId(t, stor)
 }
 
 // некорректный id
 func TestGetPerson3(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetPersonInvalidId(t, repo)
+	GetPersonInvalidId(t, stor)
 }
 
 // =============================================================
 
 func TestGetLocationMock1(t *testing.T) {
-	repo := storage.NewMock()
-	GetLocationValidId(t, repo)
+	stor := storage.NewMock()
+	GetLocationValidId(t, stor)
 }
 
 func TestGetLocationMock2(t *testing.T) {
-	repo := storage.NewMock()
-	GetLocationNonexistId(t, repo)
+	stor := storage.NewMock()
+	GetLocationNonexistId(t, stor)
 }
 
 func TestGetLocationMock3(t *testing.T) {
-	repo := storage.NewMock()
-	GetLocationInvalidId(t, repo)
+	stor := storage.NewMock()
+	GetLocationInvalidId(t, stor)
 }
 
 // корректный id
 func TestGetLocation1(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetLocationValidId(t, repo)
+	GetLocationValidId(t, stor)
 }
 
 // несуществующий id
 func TestGetLocation2(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetLocationNonexistId(t, repo)
+	GetLocationNonexistId(t, stor)
 }
 
 // некорректный id
 func TestGetLocation3(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetLocationInvalidId(t, repo)
+	GetLocationInvalidId(t, stor)
 }
 
 // =============================================================
 
 // func TestGetSpeciesMock1(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetSpeciesValidId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetSpeciesValidId(t, stor)
 // }
 
 // func TestGetSpeciesMock2(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetSpeciesNonexistId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetSpeciesNonexistId(t, stor)
 // }
 
 // func TestGetSpeciesMock3(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetSpeciesInvalidId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetSpeciesInvalidId(t, stor)
 // }
 
 // корректный id
 func TestGetSpecies1(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetSpeciesValidId(t, repo)
+	GetSpeciesValidId(t, stor)
 }
 
 // несуществующий id
 func TestGetSpecies2(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetSpeciesNonexistId(t, repo)
+	GetSpeciesNonexistId(t, stor)
 }
 
 // некорректный id
 func TestGetSpecies3(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetSpeciesInvalidId(t, repo)
+	GetSpeciesInvalidId(t, stor)
 }
 
 // =============================================================
 
 // func TestGetVehicleMock1(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetVehicleValidId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetVehicleValidId(t, stor)
 // }
 
 // func TestGetVehicleMock2(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetVehicleNonexistId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetVehicleNonexistId(t, stor)
 // }
 
 // func TestGetVehicleMock3(t *testing.T) {
-// 	repo := repo.NewMock()
-// 	GetVehicleInvalidId(t, repo)
+// 	stor := stor.NewMock()
+// 	GetVehicleInvalidId(t, stor)
 // }
 
 // корректный id
 func TestGetVehicle1(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetVehicleValidId(t, repo)
+	GetVehicleValidId(t, stor)
 }
 
 // несуществующий id
 func TestGetVehicle2(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetVehicleNonexistId(t, repo)
+	GetVehicleNonexistId(t, stor)
 }
 
 // некорректный id
 func TestGetVehicle3(t *testing.T) {
 	setEnv()
-	repo, err := getRepo(t)
+	stor, err := getStorage(t)
 	if err != nil {
 		t.Errorf("Not nil err: %v", err)
 	}
-	GetVehicleInvalidId(t, repo)
+	GetVehicleInvalidId(t, stor)
 }
 
 // =====================================================
 
-// ErrorRepo должен возвращать только ошибки internal.MockError
-func TestErrorRepo(t *testing.T) {
-	repo := storage.NewErr()
-	if _, err := repo.GetFilm(utils.NewUUID()); err != internal.MockError {
+// ErrorStorage должен возвращать только ошибки internal.MockError
+func TestErrorStorage(t *testing.T) {
+	stor := storage.NewErr()
+	if _, err := stor.GetFilm(utils.NewUUID()); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetFilms(); err != internal.MockError {
+	if _, err := stor.GetFilms(); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetPerson(utils.NewUUID()); err != internal.MockError {
+	if _, err := stor.GetPerson(utils.NewUUID()); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetPeople(); err != internal.MockError {
+	if _, err := stor.GetPeople(); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetLocation(utils.NewUUID()); err != internal.MockError {
+	if _, err := stor.GetLocation(utils.NewUUID()); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetLocations(); err != internal.MockError {
+	if _, err := stor.GetLocations(); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetSpecies(utils.NewUUID()); err != internal.MockError {
+	if _, err := stor.GetSpecies(utils.NewUUID()); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetAllSpecies(); err != internal.MockError {
+	if _, err := stor.GetAllSpecies(); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetVehicle(utils.NewUUID()); err != internal.MockError {
+	if _, err := stor.GetVehicle(utils.NewUUID()); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
-	if _, err := repo.GetVehicles(); err != internal.MockError {
+	if _, err := stor.GetVehicles(); err != internal.MockError {
 		t.Errorf("Wrong error: %v", err)
 	}
 }

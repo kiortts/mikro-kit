@@ -12,14 +12,14 @@ import (
 
 // Handler
 type Handler struct {
-	repo ghibli.PersonRepo
+	repo ghibli.PersonStorage
 }
 
 // проверка реализации типом требуемых интерфейсов
 var _ httpserver.Router = (*Handler)(nil)
 
 // New возвращает хэндлер
-func New(repo ghibli.PersonRepo) *Handler {
+func New(repo ghibli.PersonStorage) *Handler {
 	s := &Handler{
 		repo: repo,
 	}

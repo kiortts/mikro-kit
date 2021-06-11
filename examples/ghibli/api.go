@@ -65,27 +65,27 @@ type Vehicle struct {
 	Url          string `json:"url"`
 }
 
-type FilmRepo interface {
+type FilmStorage interface {
 	GetFilm(id string) (*Film, error) // Returns a film based on a single ID
 	GetFilms() ([]*Film, error)       // Returns information about all of the Studio Ghibli films.
 }
 
-type PersonRepo interface {
+type PersonStorage interface {
 	GetPerson(id string) (*Person, error)
 	GetPeople() ([]*Person, error)
 }
 
-type LocationRepo interface {
+type LocationStorage interface {
 	GetLocation(id string) (*Location, error)
 	GetLocations() ([]*Location, error)
 }
 
-type SpeciesRepo interface {
+type SpeciesStorage interface {
 	GetSpecies(id string) (*Species, error)
 	GetAllSpecies() ([]*Species, error)
 }
 
-type VehicleRepo interface {
+type VehicleStorage interface {
 	GetVehicle(id string) (*Vehicle, error)
 	GetVehicles() ([]*Vehicle, error)
 }
