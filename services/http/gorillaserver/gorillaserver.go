@@ -1,4 +1,4 @@
-package httpserver
+package gorillaserver
 
 import (
 	"context"
@@ -11,25 +11,25 @@ import (
 	"github.com/kiortts/mikro-kit/application"
 )
 
-// HttpServer сервер
-type HttpServer struct {
+// GorillaServer сервер
+type GorillaServer struct {
 	routers []Router // коллекция переданных серверу API
 	r       *mux.Router
 }
 
-var _ application.Runnable = (*HttpServer)(nil)
+var _ application.Runnable = (*GorillaServer)(nil)
 var cfg *Config
 
-func (s *HttpServer) Router() *mux.Router {
+func (s *GorillaServer) Router() *mux.Router {
 	return s.r
 }
 
 // New конструктор
-func New(config *Config, routers ...Router) *HttpServer {
+func New(config *Config, routers ...Router) *GorillaServer {
 
 	checkConfig(config)
 
-	s := &HttpServer{routers: routers}
+	s := &GorillaServer{routers: routers}
 
 	// создание и конфигурация роутера
 	// s.r = chi.NewRouter() // chi
@@ -59,7 +59,7 @@ func New(config *Config, routers ...Router) *HttpServer {
 func dummyHandler(w http.ResponseWriter, r *http.Request) {}
 
 // Run запуск сервиса в работу
-func (s *HttpServer) Run(main *application.MainParams) error {
+func (s *GorillaServer) Run(main *application.MainParams) error {
 
 	http.Handle("/", s.r)
 

@@ -1,4 +1,4 @@
-package httpserver
+package gorillaserver
 
 import "github.com/alexflint/go-arg"
 

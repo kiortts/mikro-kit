@@ -13,22 +13,22 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/endpoints/people"
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/storage"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/httpserver"
+	"github.com/kiortts/mikro-kit/services/http/gorillaserver"
 	"github.com/thoas/go-funk"
 )
 
-func beforeEach(t *testing.T) (*httpserver.HttpServer, *storage.Storage) {
+func beforeEach(t *testing.T) (*gorillaserver.GorillaServer, *storage.Storage) {
 	log.SetFlags(log.Lshortfile)
 
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewMock()
 	handler := people.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	return server, repo
 }
 
-func beforeTestGetPerson(t *testing.T) (*httpserver.HttpServer, *ghibli.Person) {
+func beforeTestGetPerson(t *testing.T) (*gorillaserver.GorillaServer, *ghibli.Person) {
 
 	server, repo := beforeEach(t)
 
@@ -136,7 +136,7 @@ func TestGetPerson6(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	handler := people.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/people/%s", utils.NewUUID()), nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func TestGetPerson6(t *testing.T) {
 	}
 }
 
-func beforeTestGetPersons(t *testing.T) (*httpserver.HttpServer, []*ghibli.Person) {
+func beforeTestGetPersons(t *testing.T) (*gorillaserver.GorillaServer, []*ghibli.Person) {
 
 	server, repo := beforeEach(t)
 
@@ -214,7 +214,7 @@ func TestGetPersons3(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	handler := people.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/people"), nil)
 	if err != nil {

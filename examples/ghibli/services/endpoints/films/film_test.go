@@ -12,23 +12,22 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/storage"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/httpserver"
-
+	"github.com/kiortts/mikro-kit/services/http/gorillaserver"
 	"github.com/thoas/go-funk"
 )
 
-func beforeEach(t *testing.T) (*httpserver.HttpServer, *storage.Storage) {
+func beforeEach(t *testing.T) (*gorillaserver.GorillaServer, *storage.Storage) {
 	log.SetFlags(log.Lshortfile)
 
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewMock()
 	filmHandler := New(repo)
-	server := httpserver.New(nil, filmHandler)
+	server := gorillaserver.New(nil, filmHandler)
 
 	return server, repo
 }
 
-func beforeTestGetFilm(t *testing.T) (*httpserver.HttpServer, *ghibli.Film) {
+func beforeTestGetFilm(t *testing.T) (*gorillaserver.GorillaServer, *ghibli.Film) {
 
 	server, repo := beforeEach(t)
 
@@ -136,7 +135,7 @@ func TestGetFilm6(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	filmHandler := New(repo)
-	server := httpserver.New(nil, filmHandler)
+	server := gorillaserver.New(nil, filmHandler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/films/%s", utils.NewUUID()), nil)
 	if err != nil {
@@ -150,7 +149,7 @@ func TestGetFilm6(t *testing.T) {
 	}
 }
 
-func beforeTestGetFilms(t *testing.T) (*httpserver.HttpServer, []*ghibli.Film) {
+func beforeTestGetFilms(t *testing.T) (*gorillaserver.GorillaServer, []*ghibli.Film) {
 
 	server, repo := beforeEach(t)
 
@@ -214,7 +213,7 @@ func TestGetFilms3(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	filmHandler := New(repo)
-	server := httpserver.New(nil, filmHandler)
+	server := gorillaserver.New(nil, filmHandler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/films"), nil)
 	if err != nil {

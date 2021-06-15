@@ -13,22 +13,22 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/endpoints/locations"
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/storage"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/httpserver"
+	"github.com/kiortts/mikro-kit/services/http/gorillaserver"
 	"github.com/thoas/go-funk"
 )
 
-func beforeEach(t *testing.T) (*httpserver.HttpServer, *storage.Storage) {
+func beforeEach(t *testing.T) (*gorillaserver.GorillaServer, *storage.Storage) {
 	log.SetFlags(log.Lshortfile)
 
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewMock()
 	handler := locations.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	return server, repo
 }
 
-func beforeTestGetLocation(t *testing.T) (*httpserver.HttpServer, *ghibli.Location) {
+func beforeTestGetLocation(t *testing.T) (*gorillaserver.GorillaServer, *ghibli.Location) {
 
 	server, stor := beforeEach(t)
 
@@ -136,7 +136,7 @@ func TestGetLocation6(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	handler := locations.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/locations/%s", utils.NewUUID()), nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func TestGetLocation6(t *testing.T) {
 	}
 }
 
-func beforeTestGetLocations(t *testing.T) (*httpserver.HttpServer, []*ghibli.Location) {
+func beforeTestGetLocations(t *testing.T) (*gorillaserver.GorillaServer, []*ghibli.Location) {
 
 	server, stor := beforeEach(t)
 
@@ -214,7 +214,7 @@ func TestGetLocations3(t *testing.T) {
 	// тестовое хранилище, хэндлер, сервер
 	repo := storage.NewErr()
 	handler := locations.New(repo)
-	server := httpserver.New(nil, handler)
+	server := gorillaserver.New(nil, handler)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("/locations"), nil)
 	if err != nil {

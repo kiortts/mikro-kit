@@ -1,4 +1,4 @@
-package httpserver
+package gorillaserver
 
 import "net/http"
 
