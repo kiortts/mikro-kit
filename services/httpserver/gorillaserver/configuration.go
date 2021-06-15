@@ -1,6 +1,8 @@
 package gorillaserver
 
-import "github.com/alexflint/go-arg"
+import (
+	"github.com/alexflint/go-arg"
+)
 
 // config параметры конфигурации
 type Config struct {

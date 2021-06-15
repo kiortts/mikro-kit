@@ -1,4 +1,4 @@
-package gorillaserver
+package chiserver
 
 import (
 	"context"
@@ -7,59 +7,45 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 	"github.com/kiortts/mikro-kit/application"
+	"github.com/kiortts/mikro-kit/services/httpserver"
 )
 
-// GorillaServer сервер
-type GorillaServer struct {
-	routers []Router // коллекция переданных серверу API
-	r       *mux.Router
+// ChiServer сервер
+type ChiServer struct {
+	routers []httpserver.Router // коллекция переданных серверу API
+	r       *chi.Mux
 }
 
-var _ application.Runnable = (*GorillaServer)(nil)
+var _ application.Runnable = (*ChiServer)(nil)
 var cfg *Config
 
-func (s *GorillaServer) Router() *mux.Router {
+func (s *ChiServer) Router() *chi.Mux {
 	return s.r
 }
 
 // New конструктор
-func New(config *Config, routers ...Router) *GorillaServer {
+func New(config *Config, routers ...httpserver.Router) *ChiServer {
 
 	checkConfig(config)
 
-	s := &GorillaServer{routers: routers}
+	s := &ChiServer{routers: routers}
 
 	// создание и конфигурация роутера
-	// s.r = chi.NewRouter() // chi
-	// for _, api := range s.apis {
-	// 	for _, route := range api.Routes() {
-	// 		log.Println(route.Name)
-	// 		s.r.Method(route.Method, route.Pattern, route.Handler)
-	// 	}
-	// }
-
-	s.r = mux.NewRouter() // gorilla
-	for _, router := range s.routers {
-		for _, route := range router.Routes() {
-			s.r.Methods(route.Method).
-				Path(route.Pattern).
-				Queries(route.QueryPairs...).
-				Name(route.Name).
-				Handler(route.Handler)
-
+	s.r = chi.NewRouter() // chi
+	for _, api := range s.routers {
+		for _, route := range api.Routes() {
+			log.Println(route.Name)
+			s.r.Method(route.Method, route.Pattern, route.Handler)
 		}
 	}
 
 	return s
 }
 
-// пустой хэндлер
-func dummyHandler(w http.ResponseWriter, r *http.Request) {}
-
 // Run запуск сервиса в работу
-func (s *GorillaServer) Run(main *application.MainParams) error {
+func (s *ChiServer) Run(main *application.MainParams) error {
 
 	http.Handle("/", s.r)
 

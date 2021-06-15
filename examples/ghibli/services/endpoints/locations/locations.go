@@ -7,7 +7,7 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/http/gorillaserver"
+	"github.com/kiortts/mikro-kit/services/httpserver"
 )
 
 // Handler
@@ -16,7 +16,7 @@ type Handler struct {
 }
 
 // проверка реализации типом требуемых интерфейсов
-var _ gorillaserver.Router = (*Handler)(nil)
+var _ httpserver.Router = (*Handler)(nil)
 
 // New возвращает хэндлер
 func New(repo ghibli.LocationStorage) *Handler {
@@ -27,8 +27,8 @@ func New(repo ghibli.LocationStorage) *Handler {
 }
 
 // Routes реализация интерфейса HttpRouter, возвращает набор путей и хэндлеров для них
-func (s *Handler) Routes() []gorillaserver.Route {
-	routes := []gorillaserver.Route{
+func (s *Handler) Routes() []httpserver.Route {
+	routes := []httpserver.Route{
 
 		{
 			Name:    "GetLocation",

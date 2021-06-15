@@ -9,7 +9,7 @@ import (
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/endpoints/locations"
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/endpoints/people"
 	"github.com/kiortts/mikro-kit/examples/ghibli/services/storage"
-	"github.com/kiortts/mikro-kit/services/http/gorillaserver"
+	"github.com/kiortts/mikro-kit/services/httpserver/chiserver"
 	"github.com/pkg/errors"
 )
 
@@ -46,6 +46,7 @@ func buildApp(app *application.Application) {
 	filmsEP := films.New(stor)
 	peopleEP := people.New(stor)
 	locationsEP := locations.New(stor)
-	server := gorillaserver.New(nil, filmsEP, peopleEP, locationsEP)
+	// server := gorillaserver.New(nil, filmsEP, peopleEP, locationsEP)
+	server := chiserver.New(nil, filmsEP, peopleEP, locationsEP)
 	app.Add(server)
 }
