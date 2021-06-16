@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/kiortts/mikro-kit/application"
-	"github.com/kiortts/mikro-kit/services/httpserver"
+	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/components/httpserver"
 )
 
 // GorillaServer сервер
@@ -19,7 +19,7 @@ type GorillaServer struct {
 }
 
 //
-var _ application.Runnable = (*GorillaServer)(nil)
+var _ components.Runnable = (*GorillaServer)(nil)
 var cfg *Config
 
 func (s *GorillaServer) Router() *mux.Router {
@@ -51,7 +51,7 @@ func New(config *Config, routers ...httpserver.Router) *GorillaServer {
 func dummyHandler(w http.ResponseWriter, r *http.Request) {}
 
 // Run запуск сервиса в работу
-func (s *GorillaServer) Run(main *application.MainParams) error {
+func (s *GorillaServer) Run(main *components.MainParams) error {
 
 	http.Handle("/", s.r)
 

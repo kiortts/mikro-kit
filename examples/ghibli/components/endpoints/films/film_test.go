@@ -9,10 +9,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/kiortts/mikro-kit/components/httpserver/gorillaserver"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
-	"github.com/kiortts/mikro-kit/examples/ghibli/services/storage"
+	"github.com/kiortts/mikro-kit/examples/ghibli/components/storage"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/httpserver/gorillaserver"
 	"github.com/thoas/go-funk"
 )
 

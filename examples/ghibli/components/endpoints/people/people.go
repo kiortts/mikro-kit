@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/kiortts/mikro-kit/components/httpserver"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
 	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
-	"github.com/kiortts/mikro-kit/services/httpserver"
 )
 
 // Handler

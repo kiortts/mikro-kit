@@ -1,25 +1,25 @@
-package films
+package locations
 
 import (
 	"net/http"
-	"regexp"
 
 	"github.com/gorilla/mux"
+	"github.com/kiortts/mikro-kit/components/httpserver"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
-	"github.com/kiortts/mikro-kit/services/httpserver"
+	"github.com/kiortts/mikro-kit/examples/ghibli/utils"
 )
 
 // Handler
 type Handler struct {
-	repo ghibli.FilmStorage
+	repo ghibli.LocationStorage
 }
 
 // проверка реализации типом требуемых интерфейсов
 var _ httpserver.Router = (*Handler)(nil)
 
 // New возвращает хэндлер
-func New(repo ghibli.FilmStorage) *Handler {
+func New(repo ghibli.LocationStorage) *Handler {
 	s := &Handler{
 		repo: repo,
 	}
@@ -31,34 +31,34 @@ func (s *Handler) Routes() []httpserver.Route {
 	routes := []httpserver.Route{
 
 		{
-			Name:    "GetFilm",
+			Name:    "GetLocation",
 			Method:  http.MethodGet,
-			Pattern: "/films/{id}",
-			Handler: s.film,
+			Pattern: "/locations/{id}",
+			Handler: s.location,
 		},
 
 		{
-			Name:    "GetFilms",
+			Name:    "GetLocations",
 			Method:  http.MethodGet,
-			Pattern: "/films",
-			Handler: s.films,
+			Pattern: "/locations",
+			Handler: s.locations,
 		},
 	}
 	return routes
 }
 
-// countHandler хэндлер запроса "/film/{id}"
-func (s *Handler) film(w http.ResponseWriter, r *http.Request) {
+// countHandler хэндлер запроса "/locations/{id}"
+func (s *Handler) location(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	if !IsValidUUID(id) {
+	if !utils.IsValidUUID(id) {
 		internal.WriteJSONResponse(w, http.StatusBadRequest, internal.EmptyJSON)
 		return
 	}
 
-	item, err := s.repo.GetFilm(id)
+	item, err := s.repo.GetLocation(id)
 	if err != nil {
 		switch err {
 		case internal.NotFoundError:
@@ -72,20 +72,27 @@ func (s *Handler) film(w http.ResponseWriter, r *http.Request) {
 	internal.WriteItemAsJSON(w, item)
 }
 
-// countHandler хэндлер запроса "/films"
-func (s *Handler) films(w http.ResponseWriter, r *http.Request) {
+// countHandler хэндлер запроса "/locations"
+func (s *Handler) locations(w http.ResponseWriter, r *http.Request) {
 
-	item, err := s.repo.GetFilms()
+	item, err := s.repo.GetLocations()
 	if err != nil {
-		internal.WriteJSONResponse(w, http.StatusInternalServerError, internal.EmptyJSON)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	internal.WriteItemAsJSON(w, item)
 }
 
-// сравнение строки с шаблоном uuid
-func IsValidUUID(uuid string) bool {
-	r := regexp.MustCompile("^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$")
-	return r.MatchString(uuid)
-}
+// func writeItem(w http.ResponseWriter, item interface{}) {
+
+// 	data, err := json.MarshalIndent(item, "", "   ")
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+// 	w.Write(data)
+// }

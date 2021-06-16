@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kiortts/mikro-kit/application"
+	"github.com/kiortts/mikro-kit/components"
 )
 
 func TestPrintHelloFunc(t *testing.T) {
@@ -66,7 +66,7 @@ func CommonHelloWorld(t *testing.T, name string, instance *HelloWordModule) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	mainParams := &application.MainParams{
+	mainParams := &components.MainParams{
 		Ctx:  context.TODO(),
 		Wg:   new(sync.WaitGroup),
 		Kill: func() {},

@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/kiortts/mikro-kit/application"
-	"github.com/kiortts/mikro-kit/services/httpserver"
+	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/components/httpserver"
 )
 
 // ChiServer сервер
@@ -18,7 +18,7 @@ type ChiServer struct {
 	r       *chi.Mux
 }
 
-var _ application.Runnable = (*ChiServer)(nil)
+var _ components.Runnable = (*ChiServer)(nil)
 var cfg *Config
 
 func (s *ChiServer) Router() *chi.Mux {
@@ -45,7 +45,7 @@ func New(config *Config, routers ...httpserver.Router) *ChiServer {
 }
 
 // Run запуск сервиса в работу
-func (s *ChiServer) Run(main *application.MainParams) error {
+func (s *ChiServer) Run(main *components.MainParams) error {
 
 	http.Handle("/", s.r)
 

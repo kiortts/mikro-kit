@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/kiortts/mikro-kit/application"
+	"github.com/kiortts/mikro-kit/components"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
 	"github.com/pkg/errors"
@@ -61,7 +61,7 @@ func NewLocal() *Storage {
 	return r
 }
 
-func (s *Storage) Run(main *application.MainParams) error {
+func (s *Storage) Run(main *components.MainParams) error {
 
 	// log.Printf(dict.LOG_SERVICE_RUN, "Storage")
 
