@@ -1,4 +1,4 @@
-package service
+package application
 
 import (
 	"context"
@@ -14,31 +14,31 @@ import (
 	"github.com/pkg/errors"
 )
 
-type Service struct {
+type Application struct {
 	name       string
 	version    string
 	components []components.Runnable
 	mainParams *components.MainParams
 }
 
-func New(serviceName string, serviceVersion string) *Service {
+func New(appName string, appVersion string) *Application {
 
-	s := &Service{
-		name:    serviceName,
-		version: serviceVersion,
+	s := &Application{
+		name:    appName,
+		version: appVersion,
 	}
 
 	return s
 }
 
-func (s *Service) Add(services ...components.Runnable) *Service {
-	s.components = append(s.components, services...)
+func (s *Application) Add(components ...components.Runnable) *Application {
+	s.components = append(s.components, components...)
 	return s
 }
 
-func (s *Service) Run() error {
+func (s *Application) Run() error {
 
-	log.Printf("Service %s %s run", s.name, s.version)
+	log.Printf("Application %s %s run", s.name, s.version)
 	ctx, cancel := context.WithCancel(context.Background())
 	wg := new(sync.WaitGroup)
 
@@ -48,11 +48,11 @@ func (s *Service) Run() error {
 		Kill: cancel,
 	}
 
-	for _, service := range s.components {
-		if err := service.Run(s.mainParams); err != nil {
+	for _, component := range s.components {
+		if err := component.Run(s.mainParams); err != nil {
 			s.mainParams.Kill()
-			serviceType := reflect.TypeOf(service)
-			msg := fmt.Sprintf("Run %s err", serviceType)
+			componentType := reflect.TypeOf(component)
+			msg := fmt.Sprintf("Run %s err", componentType)
 			return errors.Wrap(err, msg)
 		}
 	}
@@ -60,14 +60,14 @@ func (s *Service) Run() error {
 	return nil
 }
 
-func (s *Service) Wait() {
+func (s *Application) Wait() {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 }
 
-func (s *Service) Stop() {
+func (s *Application) Stop() {
 	s.mainParams.Kill()
 	s.mainParams.Wg.Wait()
-	log.Printf("Service %s %s stop", s.name, s.version)
+	log.Printf("Application %s %s stop", s.name, s.version)
 }

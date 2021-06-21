@@ -44,6 +44,10 @@ func New(config *Config, routers ...httpserver.Router) *ChiServer {
 	return s
 }
 
+func (s *ChiServer) Stop() {
+	// TODO: cancel local context
+}
+
 // Run запуск сервиса в работу
 func (s *ChiServer) Run(main *components.MainParams) error {
 

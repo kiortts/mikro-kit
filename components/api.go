@@ -7,6 +7,7 @@ import (
 
 type Runnable interface {
 	Run(*MainParams) error
+	Stop()
 }
 
 type MainParams struct {

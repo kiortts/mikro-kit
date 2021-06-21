@@ -29,6 +29,8 @@ func New(config *Config) *HelloWordModule {
 	return s
 }
 
+func (s *HelloWordModule) Stop() {}
+
 // Run the module.
 // This is non blocking method returns only module starting errors.
 func (s *HelloWordModule) Run(mainParams *components.MainParams) error {

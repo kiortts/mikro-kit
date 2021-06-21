@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/kiortts/mikro-kit/application"
-	"github.com/kiortts/mikro-kit/examples/helloworld/components/helloworld"
+	componenta "github.com/kiortts/mikro-kit/examples/abstract/components/componentA"
 	"github.com/pkg/errors"
 )
 
@@ -15,8 +15,8 @@ func main() {
 	log.SetFlags(log.Lshortfile)
 
 	// make the app
-	appName := "Hello-World"
-	appVersion := "v0.1.0"
+	appName := "AbstractApplication" // FIXME: change to <your service> name
+	appVersion := "v0.1.0"           // FIXME: change to current version
 	app := application.New(appName, appVersion)
 	makeApplicationComponents(app)
 
@@ -36,6 +36,12 @@ func main() {
 
 // make all app components and add some of them to app.Run
 func makeApplicationComponents(app *application.Application) {
-	hw := helloworld.New(nil)
-	app.Add(hw)
+
+	// TODO: implements me like:
+
+	caConfig := &componenta.Config{
+		Param: "Value",
+	}
+	ca := componenta.New(caConfig)
+	app.Add(ca)
 }

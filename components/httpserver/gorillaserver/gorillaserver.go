@@ -50,6 +50,10 @@ func New(config *Config, routers ...httpserver.Router) *GorillaServer {
 // пустой хэндлер
 func dummyHandler(w http.ResponseWriter, r *http.Request) {}
 
+func (s *GorillaServer) Stop() {
+	// TODO: cancel local context
+}
+
 // Run запуск сервиса в работу
 func (s *GorillaServer) Run(main *components.MainParams) error {
 

@@ -61,6 +61,8 @@ func NewLocal() *Storage {
 	return r
 }
 
+func (s *Storage) Stop() {}
+
 func (s *Storage) Run(main *components.MainParams) error {
 
 	// log.Printf(dict.LOG_SERVICE_RUN, "Storage")
