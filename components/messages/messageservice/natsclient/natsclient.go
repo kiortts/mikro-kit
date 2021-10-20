@@ -8,7 +8,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 	"github.com/nats-io/stan.go"
 )
@@ -21,7 +21,7 @@ type NatsClient struct {
 
 // статическая проверка реализаии интерфесов
 var _ messages.Service = (*NatsClient)(nil)
-var _ components.Runnable = (*NatsClient)(nil)
+var _ application.Runnable = (*NatsClient)(nil)
 
 var cfg *Config
 var bmService messages.BigMsgService
@@ -78,8 +78,8 @@ func (s *NatsClient) Stop() {
 }
 
 // Запуск клиента в работу.
-// Реализация интерфейса components.Runnable.
-func (s *NatsClient) Run(mainParams *components.MainParams) error {
+// Реализация интерфейса application.Runnable.
+func (s *NatsClient) Run(mainParams *application.MainParams) error {
 
 	// неблокирующие методы
 	s.getConnection(mainParams.Ctx, mainParams.Wg, cfg)

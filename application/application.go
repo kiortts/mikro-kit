@@ -9,16 +9,16 @@ import (
 	"reflect"
 	"sync"
 	"syscall"
+	"time"
 
-	"github.com/kiortts/mikro-kit/components"
 	"github.com/pkg/errors"
 )
 
 type Application struct {
 	name       string
 	version    string
-	components []components.Runnable
-	mainParams *components.MainParams
+	components []Runnable
+	mainParams *MainParams
 }
 
 func New(appName string, appVersion string) *Application {
@@ -31,43 +31,74 @@ func New(appName string, appVersion string) *Application {
 	return s
 }
 
-func (s *Application) Add(components ...components.Runnable) *Application {
+func (s *Application) Add(components ...Runnable) *Application {
 	s.components = append(s.components, components...)
 	return s
 }
 
 func (s *Application) Run() error {
 
-	log.Printf("Application %s %s run", s.name, s.version)
 	ctx, cancel := context.WithCancel(context.Background())
 	wg := new(sync.WaitGroup)
 
-	s.mainParams = &components.MainParams{
-		Ctx:  ctx,
-		Wg:   wg,
-		Kill: cancel,
+	s.mainParams = &MainParams{
+		Ctx:     ctx,
+		Wg:      wg,
+		AppStop: cancel,
 	}
 
 	for _, component := range s.components {
 		if err := component.Run(s.mainParams); err != nil {
-			s.mainParams.Kill()
+			s.mainParams.AppStop()
 			componentType := reflect.TypeOf(component)
 			msg := fmt.Sprintf("Run %s err", componentType)
 			return errors.Wrap(err, msg)
 		}
 	}
 
+	log.Printf("Application %s %s RUN", s.name, s.version)
 	return nil
 }
 
 func (s *Application) Wait() {
+
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
-	<-quit
+
+	select {
+	case <-quit:
+	case <-s.mainParams.Ctx.Done():
+	}
 }
 
-func (s *Application) Stop() {
-	s.mainParams.Kill()
-	s.mainParams.Wg.Wait()
-	log.Printf("Application %s %s stop", s.name, s.version)
+func (s *Application) Stop(timeout time.Duration) {
+
+	s.mainParams.AppStop()
+	for _, component := range s.components {
+		component.Stop()
+	}
+
+	if waitTimeout(s.mainParams.Wg, timeout) {
+		log.Println("Timed out waiting for main wait group")
+	} else {
+		log.Println("Main wait group finished")
+	}
+
+	log.Printf("Application %s %s DONE", s.name, s.version)
+}
+
+// waitTimeout waits for the waitgroup for the specified max timeout.
+// Returns true if waiting timed out.
+func waitTimeout(wg *sync.WaitGroup, timeout time.Duration) bool {
+	c := make(chan struct{})
+	go func() {
+		defer close(c)
+		wg.Wait()
+	}()
+	select {
+	case <-c:
+		return false // completed normally
+	case <-time.After(timeout):
+		return true // timed out
+	}
 }

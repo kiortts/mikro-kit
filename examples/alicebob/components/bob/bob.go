@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 )
 
@@ -15,7 +15,7 @@ type Bob struct {
 }
 
 // статическая проверка реализаии интерфесов
-var _ components.Runnable = (*Bob)(nil)
+var _ application.Runnable = (*Bob)(nil)
 var msgServ messages.Service
 
 func New(msgService messages.Service) *Bob {
@@ -30,7 +30,7 @@ func (s *Bob) Stop() {
 	}
 }
 
-func (s *Bob) Run(mainParams *components.MainParams) error {
+func (s *Bob) Run(mainParams *application.MainParams) error {
 	log.Println("I'm Bob")
 
 	mainParams.Wg.Add(1)

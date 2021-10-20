@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/httpserver"
 )
 
@@ -19,7 +19,7 @@ type GorillaServer struct {
 }
 
 //
-var _ components.Runnable = (*GorillaServer)(nil)
+var _ application.Runnable = (*GorillaServer)(nil)
 var cfg *Config
 
 func (s *GorillaServer) Router() *mux.Router {
@@ -55,7 +55,7 @@ func (s *GorillaServer) Stop() {
 }
 
 // Run запуск сервиса в работу
-func (s *GorillaServer) Run(main *components.MainParams) error {
+func (s *GorillaServer) Run(main *application.MainParams) error {
 
 	http.Handle("/", s.r)
 
@@ -69,7 +69,7 @@ func (s *GorillaServer) Run(main *components.MainParams) error {
 		if err := server.ListenAndServe(); err != nil {
 			log.Printf("http server DONE: %v", err)
 		}
-		main.Kill() // при падении http сервера завершается работа всех остальных сервисов приложения
+		main.AppStop() // при падении http сервера завершается работа всех остальных сервисов приложения
 	}()
 
 	// прекращение работы сервера

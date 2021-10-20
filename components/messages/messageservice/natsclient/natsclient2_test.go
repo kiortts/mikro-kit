@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 	"github.com/kiortts/mikro-kit/components/messages/messageservice/natsclient"
 )
@@ -23,10 +23,10 @@ func beforeEach() (context.Context, *sync.WaitGroup, *natsclient.NatsClient) {
 	}
 	ctx := context.TODO()
 	wg := new(sync.WaitGroup)
-	mainParams := &components.MainParams{
-		Ctx:  ctx,
-		Wg:   wg,
-		Kill: func() {},
+	mainParams := &application.MainParams{
+		Ctx:     ctx,
+		Wg:      wg,
+		AppStop: func() {},
 	}
 	natsClient := natsclient.New(cfg, nil)
 	natsClient.Run(mainParams)

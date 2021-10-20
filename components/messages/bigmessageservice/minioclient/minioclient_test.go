@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 )
 
 func TestPutAndGet(t *testing.T) {
@@ -21,7 +21,7 @@ func TestPutAndGet(t *testing.T) {
 		BucketName:      "bigmsgs",
 	}
 
-	mainParams := &components.MainParams{
+	mainParams := &application.MainParams{
 		Ctx: context.TODO(),
 		Wg:  new(sync.WaitGroup),
 	}

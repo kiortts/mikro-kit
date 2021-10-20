@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/components/storage"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
@@ -245,7 +245,7 @@ func setEnv() {
 func getStorage(t *testing.T) (*storage.Storage, error) {
 
 	stor := storage.NewLocal()
-	main := &components.MainParams{Ctx: context.Background(), Wg: new(sync.WaitGroup), Kill: func() {}}
+	main := &application.MainParams{Ctx: context.Background(), Wg: new(sync.WaitGroup), AppStop: func() {}}
 
 	err := stor.Run(main)
 	if err != nil {

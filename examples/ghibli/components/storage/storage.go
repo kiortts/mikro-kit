@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/examples/ghibli"
 	"github.com/kiortts/mikro-kit/examples/ghibli/internal"
 	"github.com/pkg/errors"
@@ -14,6 +14,7 @@ import (
 
 // Storage сервис
 type Storage struct {
+	*application.AbstractComponent
 	films     map[string]*ghibli.Film
 	people    map[string]*ghibli.Person
 	locations map[string]*ghibli.Location
@@ -51,11 +52,12 @@ func getConfig() *config {
 func NewLocal() *Storage {
 
 	r := &Storage{
-		films:     make(map[string]*ghibli.Film),
-		people:    make(map[string]*ghibli.Person),
-		locations: make(map[string]*ghibli.Location),
-		species:   make(map[string]*ghibli.Species),
-		vehicles:  make(map[string]*ghibli.Vehicle),
+		AbstractComponent: &application.AbstractComponent{},
+		films:             make(map[string]*ghibli.Film),
+		people:            make(map[string]*ghibli.Person),
+		locations:         make(map[string]*ghibli.Location),
+		species:           make(map[string]*ghibli.Species),
+		vehicles:          make(map[string]*ghibli.Vehicle),
 	}
 
 	return r
@@ -63,21 +65,17 @@ func NewLocal() *Storage {
 
 func (s *Storage) Stop() {}
 
-func (s *Storage) Run(main *components.MainParams) error {
+func (s *Storage) Run(main *application.MainParams) error {
 
-	// log.Printf(dict.LOG_SERVICE_RUN, "Storage")
+	s.MakeLocalCtxAndWg(main)
 
 	if err := s.fill(); err != nil {
 		return errors.Wrap(err, "Run Storage err")
 	}
 
-	main.Wg.Add(1)
-	go func() {
-		defer main.Wg.Done()
-		<-main.Ctx.Done()
-		log.Printf("Storage DONE")
-	}()
+	s.WaitAndDo()
 
+	log.Printf("Local storage CREATED")
 	return nil
 }
 

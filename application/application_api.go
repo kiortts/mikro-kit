@@ -1,4 +1,4 @@
-package components
+package application
 
 import (
 	"context"
@@ -11,7 +11,7 @@ type Runnable interface {
 }
 
 type MainParams struct {
-	Ctx  context.Context
-	Wg   *sync.WaitGroup
-	Kill func()
+	Ctx     context.Context
+	Wg      *sync.WaitGroup
+	AppStop func()
 }

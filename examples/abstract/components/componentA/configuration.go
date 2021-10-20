@@ -11,7 +11,7 @@ type Config struct {
 	Param string `arg:"env:COMP_A_PARAM"`
 }
 
-// Проверка и сохранение входяще конфигурации.
+// Проверка и сохранение входящей конфигурации.
 func checkConfig(config *Config) {
 
 	if config != nil {

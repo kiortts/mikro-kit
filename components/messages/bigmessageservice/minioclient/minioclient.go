@@ -1,7 +1,7 @@
 package minioclient
 
 import (
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -10,13 +10,13 @@ import (
 )
 
 type MinioClient struct {
-	components.AbstractComponent
+	application.AbstractComponent
 	client *minio.Client
 	token  []byte
 }
 
 // статическая проверка реализаии интерфесов
-var _ components.Runnable = (*MinioClient)(nil)
+var _ application.Runnable = (*MinioClient)(nil)
 var _ messages.BigMsgService = (*MinioClient)(nil)
 
 // статические переменные
@@ -31,8 +31,8 @@ func New(config *Config) *MinioClient {
 }
 
 // Запуск клиента в работу.
-// Реализация интерфейса components.Runnable.
-func (s *MinioClient) Run(mainParams *components.MainParams) error {
+// Реализация интерфейса application.Runnable.
+func (s *MinioClient) Run(mainParams *application.MainParams) error {
 
 	client, err := makeDefaultMinioClient()
 	if err != nil {

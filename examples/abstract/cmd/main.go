@@ -9,21 +9,21 @@ import (
 	"github.com/pkg/errors"
 )
 
+var AppName = "AbstractApplication" // FIXME: change to <your service> name
+var AppVersion = "dev"              // FIXME: change to current version
+
 func main() {
 
-	// configure your log
+	// configure your logger
 	log.SetFlags(log.Lshortfile)
 
 	// make the app
-	appName := "AbstractApplication" // FIXME: change to <your service> name
-	appVersion := "v0.1.0"           // FIXME: change to current version
-	app := application.New(appName, appVersion)
+	app := application.New(AppName, AppVersion)
 	makeApplicationComponents(app)
 
 	// run the service
 	if err := app.Run(); err != nil {
-		go app.Stop()
-		<-time.After(time.Second * 2)
+		app.Stop(time.Second * 2)
 		log.Fatal(errors.Wrap(err, "app.Run"))
 	}
 
@@ -31,7 +31,7 @@ func main() {
 	app.Wait()
 
 	// shutdown all running components
-	app.Stop()
+	app.Stop(time.Second * 5)
 }
 
 // make all app components and add some of them to app.Run

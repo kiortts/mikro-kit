@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 )
 
@@ -15,7 +15,7 @@ type Alice struct {
 }
 
 // статическая проверка реализаии интерфесов
-var _ components.Runnable = (*Alice)(nil)
+var _ application.Runnable = (*Alice)(nil)
 var msgServ messages.Service
 
 func New(msgService messages.Service) *Alice {
@@ -30,7 +30,7 @@ func (s *Alice) Stop() {
 	}
 }
 
-func (s *Alice) Run(mainParams *components.MainParams) error {
+func (s *Alice) Run(mainParams *application.MainParams) error {
 
 	log.Println("I'm Alice")
 

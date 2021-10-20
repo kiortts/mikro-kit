@@ -3,16 +3,16 @@ package componenta
 import (
 	"context"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 )
 
 //
 type ComponentA struct {
-	components.AbstractComponent
+	application.AbstractComponent
 }
 
 // статическая проверка реализаии интерфесов
-var _ components.Runnable = (*ComponentA)(nil)
+var _ application.Runnable = (*ComponentA)(nil)
 
 // статические переменные
 var cfg *Config
@@ -25,8 +25,8 @@ func New(config *Config) *ComponentA {
 }
 
 // Запуск компонента в работу.
-// Реализация интерфейса components.Runnable.
-func (s *ComponentA) Run(mainParams *components.MainParams) error {
+// Реализация интерфейса application.Runnable.
+func (s *ComponentA) Run(mainParams *application.MainParams) error {
 
 	// make local context
 	wg := mainParams.Wg

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 )
 
 // HelloWordModule struct
@@ -14,7 +14,7 @@ type HelloWordModule struct {
 }
 
 // static interface implementation check
-var _ components.Runnable = (*HelloWordModule)(nil)
+var _ application.Runnable = (*HelloWordModule)(nil)
 
 // static variables
 var cfg *Config
@@ -33,7 +33,7 @@ func (s *HelloWordModule) Stop() {}
 
 // Run the module.
 // This is non blocking method returns only module starting errors.
-func (s *HelloWordModule) Run(mainParams *components.MainParams) error {
+func (s *HelloWordModule) Run(mainParams *application.MainParams) error {
 
 	// make the local context for this module instance
 	var localCtx context.Context

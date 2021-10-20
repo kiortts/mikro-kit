@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kiortts/mikro-kit/components"
+	"github.com/kiortts/mikro-kit/application"
 	"github.com/kiortts/mikro-kit/components/messages"
 )
 
@@ -16,7 +16,7 @@ type Eva struct {
 }
 
 // статическая проверка реализаии интерфесов
-var _ components.Runnable = (*Eva)(nil)
+var _ application.Runnable = (*Eva)(nil)
 var msgServ messages.Service
 
 func New(msgService messages.Service) *Eva {
@@ -31,7 +31,7 @@ func (s *Eva) Stop() {
 	}
 }
 
-func (s *Eva) Run(mainParams *components.MainParams) error {
+func (s *Eva) Run(mainParams *application.MainParams) error {
 
 	log.Println("I'm Eva")
 
